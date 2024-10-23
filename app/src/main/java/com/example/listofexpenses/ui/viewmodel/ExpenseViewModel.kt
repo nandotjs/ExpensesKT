@@ -20,4 +20,10 @@ class ExpenseViewModel(private val expenseRepository: ExpenseRepository) : ViewM
             onSuccess(expenses)
         }
     }
+
+    fun deleteExpense(expense: Expense) {
+        viewModelScope.launch {
+            expenseRepository.deleteExpense(expense)
+        }
+    }
 }
