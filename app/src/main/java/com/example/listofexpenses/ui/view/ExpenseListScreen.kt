@@ -72,12 +72,23 @@ fun ExpenseListScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Add a button to navigate to the Add Expense screen
-        Button(
-            onClick = { navController.navigate("add_expense") },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+        Row(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text("Add Expense")
+            // Add a button to navigate to the Add Expense screen
+            Button(
+                onClick = { navController.navigate("add_expense") }
+            ) {
+                Text("Add Expense")
+            }
+
+            // Add a button to navigate back to the Login screen
+            Button(
+                onClick = { navController.navigate("login") }
+            ) {
+                Text("Logout")
+            }
         }
     }
 }
