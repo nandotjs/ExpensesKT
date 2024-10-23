@@ -37,7 +37,7 @@ fun ExpenseListScreen(
         // Add a title to the screen
         Text(
             text = "Expense List",
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 16.dp)
         )
 
