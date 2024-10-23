@@ -10,10 +10,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.listofexpenses.ui.view.*
 import com.example.listofexpenses.ui.viewmodel.ExpenseViewModel
+import com.example.listofexpenses.ui.viewmodel.ExpenseViewModelFactory
 import com.example.listofexpenses.ui.viewmodel.UserViewModel
 import com.example.listofexpenses.ui.viewmodel.UserViewModelFactory
 import com.example.listofexpenses.repository.UserRepository
+import com.example.listofexpenses.repository.ExpenseRepository
 import com.example.listofexpenses.data.dao.UserDao
+import com.example.listofexpenses.data.dao.ExpenseDao
 import com.example.listofexpenses.data.db.AppDatabase
 
 class MainActivity : ComponentActivity() {
@@ -32,8 +35,15 @@ class MainActivity : ComponentActivity() {
                 UserViewModelFactory(userRepository)
             ).get(UserViewModel::class.java)
 
-            // Assuming ExpenseViewModel is created similarly
-            val expenseViewModel: ExpenseViewModel by viewModels()
+            // Initialize ExpenseRepository with ExpenseDao
+            val expenseDao: ExpenseDao = AppDatabase.getDatabase(applicationContext).expenseDao()
+            val expenseRepository = ExpenseRepository(expenseDao)
+
+            // Create ExpenseViewModel using ExpenseViewModelFactory
+            val expenseViewModel: ExpenseViewModel = ViewModelProvider(
+                this,
+                ExpenseViewModelFactory(expenseRepository)
+            ).get(ExpenseViewModel::class.java)
 
             NavHost(navController, startDestination = "login") {
                 composable("login") { LoginScreen(navController, userViewModel) }

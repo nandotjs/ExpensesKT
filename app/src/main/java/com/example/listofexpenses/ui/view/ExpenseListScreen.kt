@@ -25,8 +25,15 @@ fun ExpenseListScreen(
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        // Add a title to the screen
+        Text(
+            text = "Expense List",
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 16.dp)
+        )
+
+        LazyColumn(modifier = Modifier.weight(1f)) {
             items(expenses) { expense ->
                 Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
                     Column(modifier = Modifier.padding(16.dp)) {
@@ -41,9 +48,10 @@ fun ExpenseListScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Add a button to navigate to the Add Expense screen
         Button(
             onClick = { navController.navigate("add_expense") },
-            modifier = Modifier.align(Alignment.CenterHorizontally).padding(16.dp)
+            modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
             Text("Add Expense")
         }
