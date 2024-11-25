@@ -10,11 +10,13 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.listofexpenses.ui.viewmodel.UserViewModel
+import com.example.listofexpenses.ui.viewmodel.ExpenseViewModel
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    expenseViewModel: ExpenseViewModel
 ) {
     var email by remember { mutableStateOf(TextFieldValue()) }
     var password by remember { mutableStateOf(TextFieldValue()) }
@@ -115,6 +117,7 @@ fun LoginScreen(
                         email.text,
                         password.text,
                         onSuccess = { user ->
+                            expenseViewModel.setCurrentUser(user.id)
                             navController.navigate("expense_list")
                         },
                         onError = {

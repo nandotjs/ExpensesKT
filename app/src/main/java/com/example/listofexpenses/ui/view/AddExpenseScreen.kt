@@ -178,6 +178,7 @@ fun AddExpenseScreen(
                     if (validateFields()) {
                         try {
                             val expense = Expense(
+                                userId = 0,
                                 amount = amount.text.toDouble(),
                                 category = category.text,
                                 date = date.text,

@@ -9,7 +9,7 @@ import com.example.listofexpenses.data.dao.UserDao
 import com.example.listofexpenses.data.model.Expense
 import com.example.listofexpenses.data.model.User
 
-@Database(entities = [User::class, Expense::class], version = 1)
+@Database(entities = [User::class, Expense::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun expenseDao(): ExpenseDao
@@ -24,7 +24,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ).build()
+                )
+                .fallbackToDestructiveMigration()
+                .build()
                 INSTANCE = instance
                 instance
             }

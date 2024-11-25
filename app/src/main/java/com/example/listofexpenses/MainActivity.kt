@@ -76,7 +76,13 @@ class MainActivity : ComponentActivity() {
 
                 Surface(color = MaterialTheme.colorScheme.background) {
                     NavHost(navController, startDestination = "login") {
-                        composable("login") { LoginScreen(navController, userViewModel) }
+                        composable("login") { 
+                            LoginScreen(
+                                navController = navController, 
+                                userViewModel = userViewModel,
+                                expenseViewModel = expenseViewModel
+                            )
+                        }
                         composable("register") { RegisterScreen(navController, userViewModel) }
                         composable("expense_list") { ExpenseListScreen(navController, expenseViewModel) }
                         composable("add_expense") { AddExpenseScreen(navController, expenseViewModel) }
