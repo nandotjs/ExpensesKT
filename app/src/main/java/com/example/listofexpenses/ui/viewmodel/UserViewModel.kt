@@ -42,4 +42,18 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
         }
     }
 
+    // Function to delete a user
+    fun deleteUser(user: User, onSuccess: () -> Unit, onError: () -> Unit) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                userRepository.deleteUser(user)
+                onSuccess()
+            } catch (e: Exception) {
+                onError()
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
 }
