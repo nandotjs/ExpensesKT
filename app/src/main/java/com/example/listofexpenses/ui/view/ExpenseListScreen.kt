@@ -1,13 +1,16 @@
 package com.example.listofexpenses.ui.view
 
+import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
@@ -26,6 +29,37 @@ fun ExpenseListScreen(
 ) {
     var expenses by remember { mutableStateOf<List<Expense>>(emptyList()) }
     var dollarRate by remember { mutableStateOf(0.0) }
+    val context = LocalContext.current
+
+    // Function to create the shareable text
+    fun createShareableText(expenses: List<Expense>, totalAmount: Double, totalInDollars: Double): String {
+        val sb = StringBuilder()
+        sb.appendLine("My Expenses List")
+        sb.appendLine("----------------")
+        sb.appendLine("Total: $totalAmount BRL / ${"%.2f".format(totalInDollars)} USD")
+        sb.appendLine("----------------")
+        
+        expenses.forEach { expense ->
+            sb.appendLine("Category: ${expense.category}")
+            sb.appendLine("Amount: ${expense.amount} BRL")
+            sb.appendLine("Date: ${expense.date}")
+            sb.appendLine("Description: ${expense.description}")
+            sb.appendLine("----------------")
+        }
+        
+        return sb.toString()
+    }
+
+    // Function to share the expenses list
+    fun shareExpensesList(text: String) {
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, text)
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, "Share expenses list via")
+        context.startActivity(shareIntent)
+    }
 
     // Function to fetch expenses and update the list
     fun fetchExpenses() {
@@ -68,11 +102,29 @@ fun ExpenseListScreen(
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         // Add a title to the screen
-        Text(
-            text = "Expense List",
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 8.dp)
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Expense List",
+                style = MaterialTheme.typography.bodyLarge,
+            )
+            
+            // Add share button
+            IconButton(
+                onClick = { 
+                    val shareableText = createShareableText(expenses, totalAmount, totalInDollars)
+                    shareExpensesList(shareableText)
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = "Share Expenses"
+                )
+            }
+        }
 
         // Display total expenses
         Text(
