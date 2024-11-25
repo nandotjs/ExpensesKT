@@ -23,28 +23,40 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            text = "Login",
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(bottom = 32.dp)
+        )
+
         TextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text("Email", style = MaterialTheme.typography.bodyLarge) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp),
+            textStyle = MaterialTheme.typography.bodyLarge
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text("Password", style = MaterialTheme.typography.bodyLarge) },
             visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp),
+            textStyle = MaterialTheme.typography.bodyLarge
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Button(
             onClick = {
@@ -52,26 +64,39 @@ fun LoginScreen(
                     email.text,
                     password.text,
                     onSuccess = { user ->
-                        navController.navigate("expense_list") // Navega para a lista de despesas
+                        navController.navigate("expense_list")
                     },
                     onError = {
                         errorMessage = "Login failed"
                     }
                 )
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
         ) {
-            Text("Login")
+            Text(
+                "Login",
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         TextButton(onClick = { navController.navigate("register") }) {
-            Text("Don't have an account? Register")
+            Text(
+                "Don't have an account? Register",
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
 
         if (errorMessage.isNotEmpty()) {
-            Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
     }
 }

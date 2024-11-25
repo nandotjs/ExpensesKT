@@ -25,37 +25,52 @@ fun RegisterScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            text = "Register",
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(bottom = 32.dp)
+        )
+
         TextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text("Name") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text("Name", style = MaterialTheme.typography.bodyLarge) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp),
+            textStyle = MaterialTheme.typography.bodyLarge
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text("Email", style = MaterialTheme.typography.bodyLarge) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp),
+            textStyle = MaterialTheme.typography.bodyLarge
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text("Password", style = MaterialTheme.typography.bodyLarge) },
             visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp),
+            textStyle = MaterialTheme.typography.bodyLarge
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Button(
             onClick = {
@@ -70,19 +85,32 @@ fun RegisterScreen(
                     }
                 )
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
         ) {
-            Text("Register")
+            Text(
+                "Register",
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         TextButton(onClick = { navController.navigate("login") }) {
-            Text("Already have an account? Login")
+            Text(
+                "Already have an account? Login",
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
 
         if (errorMessage.isNotEmpty()) {
-            Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(top = 8.dp)
+            )
         }
     }
 }
