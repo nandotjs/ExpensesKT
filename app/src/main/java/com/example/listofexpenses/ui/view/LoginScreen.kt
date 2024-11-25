@@ -19,6 +19,37 @@ fun LoginScreen(
     var email by remember { mutableStateOf(TextFieldValue()) }
     var password by remember { mutableStateOf(TextFieldValue()) }
     var errorMessage by remember { mutableStateOf("") }
+    var hasError by remember { mutableStateOf(false) }
+
+    // Validação dos campos
+    fun validateFields(): Boolean {
+        val errors = mutableListOf<String>()
+        
+        // Validação do email
+        if (email.text.isEmpty()) {
+            errors.add("email_empty")
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email.text).matches()) {
+            errors.add("email_invalid")
+        }
+
+        // Validação da senha
+        if (password.text.isEmpty()) {
+            errors.add("password_empty")
+        } else if (password.text.length < 6) {
+            errors.add("password_short")
+        }
+
+        errorMessage = when {
+            errors.contains("email_empty") -> "Email is required"
+            errors.contains("email_invalid") -> "Please enter a valid email"
+            errors.contains("password_empty") -> "Password is required"
+            errors.contains("password_short") -> "Password must be at least 6 characters"
+            else -> ""
+        }
+
+        hasError = errors.isNotEmpty()
+        return !hasError
+    }
 
     Column(
         modifier = Modifier
@@ -35,41 +66,63 @@ fun LoginScreen(
 
         TextField(
             value = email,
-            onValueChange = { email = it },
+            onValueChange = { 
+                email = it
+                if (hasError) validateFields()
+            },
             label = { Text("Email", style = MaterialTheme.typography.bodyLarge) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp),
-            textStyle = MaterialTheme.typography.bodyLarge
+            textStyle = MaterialTheme.typography.bodyLarge,
+            isError = hasError && (email.text.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email.text).matches())
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
             value = password,
-            onValueChange = { password = it },
+            onValueChange = { 
+                password = it
+                if (hasError) validateFields()
+            },
             label = { Text("Password", style = MaterialTheme.typography.bodyLarge) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp),
-            textStyle = MaterialTheme.typography.bodyLarge
+            textStyle = MaterialTheme.typography.bodyLarge,
+            isError = hasError && (password.text.isEmpty() || password.text.length < 6)
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(8.dp))
+
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
-                userViewModel.login(
-                    email.text,
-                    password.text,
-                    onSuccess = { user ->
-                        navController.navigate("expense_list")
-                    },
-                    onError = {
-                        errorMessage = "Login failed"
-                    }
-                )
+                if (validateFields()) {
+                    userViewModel.login(
+                        email.text,
+                        password.text,
+                        onSuccess = { user ->
+                            navController.navigate("expense_list")
+                        },
+                        onError = {
+                            errorMessage = "Invalid email or password"
+                            hasError = true
+                        }
+                    )
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -87,15 +140,6 @@ fun LoginScreen(
             Text(
                 "Don't have an account? Register",
                 style = MaterialTheme.typography.bodyLarge
-            )
-        }
-
-        if (errorMessage.isNotEmpty()) {
-            Text(
-                text = errorMessage,
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(top = 8.dp)
             )
         }
     }
