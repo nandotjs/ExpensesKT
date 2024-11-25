@@ -33,11 +33,21 @@ fun ExpenseListScreen(
         fetchExpenses()
     }
 
+    // Calculate total expenses
+    val totalAmount = expenses.sumOf { it.amount }
+
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         // Add a title to the screen
         Text(
             text = "Expense List",
             style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 8.dp)
+        )
+
+        // Display total expenses
+        Text(
+            text = "Total: $totalAmount",
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 16.dp)
         )
 
