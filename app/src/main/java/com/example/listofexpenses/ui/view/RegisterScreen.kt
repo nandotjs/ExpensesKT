@@ -17,6 +17,7 @@ fun RegisterScreen(
     navController: NavController,
     userViewModel: UserViewModel
 ) {
+    // Variáveis de estado
     var name by remember { mutableStateOf(TextFieldValue()) }
     var email by remember { mutableStateOf(TextFieldValue()) }
     var password by remember { mutableStateOf(TextFieldValue()) }

@@ -31,7 +31,7 @@ fun ExpenseListScreen(
     var dollarRate by remember { mutableStateOf(0.0) }
     val context = LocalContext.current
 
-    // Function to create the shareable text
+    // Criar o texto compartivel
     fun createShareableText(expenses: List<Expense>, totalAmount: Double, totalInDollars: Double): String {
         val sb = StringBuilder()
         sb.appendLine("My Expenses List")
@@ -50,7 +50,7 @@ fun ExpenseListScreen(
         return sb.toString()
     }
 
-    // Function to share the expenses list
+    // Compartilhar a lista de despesas
     fun shareExpensesList(text: String) {
         val sendIntent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -61,14 +61,14 @@ fun ExpenseListScreen(
         context.startActivity(shareIntent)
     }
 
-    // Function to fetch expenses and update the list
+    // Fetch expenses from the database
     fun fetchExpenses() {
         expenseViewModel.getExpenses { fetchedExpenses ->
             expenses = fetchedExpenses
         }
     }
 
-    // Function to fetch the dollar rate
+    // Fetch the dollar rate
     suspend fun fetchDollarRate() {
         withContext(Dispatchers.IO) {
             try {
@@ -96,7 +96,7 @@ fun ExpenseListScreen(
         fetchDollarRate()
     }
 
-    // Calculate total expenses
+    // Calcula total de despesas
     val totalAmount = expenses.sumOf { it.amount }
     val totalInDollars = if (dollarRate > 0) totalAmount / dollarRate else 0.0
 
@@ -168,14 +168,11 @@ fun ExpenseListScreen(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Add a button to navigate to the Add Expense screen
             Button(
                 onClick = { navController.navigate("add_expense") }
             ) {
                 Text("Add Expense")
             }
-
-            // Add a button to navigate back to the Login screen
             Button(
                 onClick = { navController.navigate("login") }
             ) {

@@ -9,10 +9,12 @@ import kotlinx.coroutines.launch
 class ExpenseViewModel(private val expenseRepository: ExpenseRepository) : ViewModel() {
     private var currentUserId: Int = -1
 
+    // Função para definir o usuário atual
     fun setCurrentUser(userId: Int) {
         currentUserId = userId
     }
 
+    // Função para adicionar um novo despesa
     fun addExpense(expense: Expense, onSuccess: () -> Unit) {
         if (currentUserId == -1) return
         val expenseWithUserId = expense.copy(userId = currentUserId)
@@ -22,6 +24,7 @@ class ExpenseViewModel(private val expenseRepository: ExpenseRepository) : ViewM
         }
     }
 
+    // Função para obter todas as despesas do usuário atual
     fun getExpenses(onSuccess: (List<Expense>) -> Unit) {
         if (currentUserId == -1) return
         viewModelScope.launch {
@@ -30,6 +33,7 @@ class ExpenseViewModel(private val expenseRepository: ExpenseRepository) : ViewM
         }
     }
 
+    // Função para deletar uma despesa
     fun deleteExpense(expense: Expense) {
         if (expense.userId != currentUserId) return
         viewModelScope.launch {

@@ -16,6 +16,7 @@ fun AddExpenseScreen(
     navController: NavController,
     expenseViewModel: ExpenseViewModel
 ) {
+    // Variáveis de estado
     var amount by remember { mutableStateOf(TextFieldValue()) }
     var category by remember { mutableStateOf(TextFieldValue()) }
     var date by remember { mutableStateOf(TextFieldValue()) }

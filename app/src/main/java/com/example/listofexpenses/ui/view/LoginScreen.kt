@@ -18,6 +18,7 @@ fun LoginScreen(
     userViewModel: UserViewModel,
     expenseViewModel: ExpenseViewModel
 ) {
+    // Variáveis de estado
     var email by remember { mutableStateOf(TextFieldValue()) }
     var password by remember { mutableStateOf(TextFieldValue()) }
     var errorMessage by remember { mutableStateOf("") }

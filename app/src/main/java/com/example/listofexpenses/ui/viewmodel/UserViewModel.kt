@@ -12,6 +12,7 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
+    // Funão de login
     fun login(email: String, password: String, onSuccess: (User) -> Unit, onError: () -> Unit) {
         _isLoading.value = true
         viewModelScope.launch {
@@ -28,6 +29,7 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
         }
     }
 
+    // Função de registro
     fun register(user: User, onSuccess: () -> Unit, onError: () -> Unit) {
         _isLoading.value = true
         viewModelScope.launch {
